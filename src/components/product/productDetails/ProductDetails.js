@@ -1,7 +1,10 @@
 import styles from "./ProductDetails.module.scss";
+
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Image from "../../../assets/loader.gif";
+
+import spinnerImg from "../../../assets/loader.gif";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_TO_CART,
@@ -9,18 +12,17 @@ import {
   DECREASE_CART,
   selectCartItems,
 } from "../../../redux/slice/cartSlice";
+import useFetchDocument from "../../../customHooks/useFetchDocument";
 import useFetchCollection from "../../../customHooks/useFetchCollection";
 import Card from "../../Card";
-import useFetchDocument from "../../../customHooks/useFetchDocument";
 import StarsRating from "react-star-rate";
-
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
-  const {document}=useFetchDocument("products",id);
+  const { document } = useFetchDocument("products", id);
   const { data } = useFetchCollection("reviews");
   const filteredReviews = data.filter((review) => review.productID === id);
 
@@ -51,7 +53,7 @@ const ProductDetails = () => {
           <Link to="/#products">&larr; Back To Products</Link>
         </div>
         {product === null ? (
-          <img src={Image} alt="Loading" style={{ width: "50px" }} />
+          <img src={spinnerImg} alt="Loading" style={{ width: "50px" }} />
         ) : (
           <>
             <div className={styles.details}>
@@ -101,37 +103,32 @@ const ProductDetails = () => {
           </>
         )}
         <Card cardClass={styles.card}>
-        <h3>Product Reviews</h3>
-        <div>
-          {filteredReviews.length===0?(
-            <p> There are no reviews for this product yet</p>
-          ):(
-            <>
-              {filteredReviews.map((item,index)=>{
-                const {rate,review,reviewDate,userName}=item
-                return(
-                  <div key={index}  className={styles.review}>
-                    <StarsRating value={rate}/>
-                    <p>{review}</p>
-                    <span>
-                      <b>
-                        {reviewDate}
-                      </b>
-                    </span>
-                    <span>
-                      <b>By
-                        {userName}
-                      </b>
-                    </span>
-                  </div>
-                )
-              })}
-            </>
-          )}
-        </div>
-
+          <h3>Product Reviews</h3>
+          <div>
+            {filteredReviews.length === 0 ? (
+              <p>There are no reviews for this product yet.</p>
+            ) : (
+              <>
+                {filteredReviews.map((item, index) => {
+                  const { rate, review, reviewDate, userName } = item;
+                  return (
+                    <div key={index} className={styles.review}>
+                      <StarsRating value={rate} />
+                      <p>{review}</p>
+                      <span>
+                        <b>{reviewDate}</b>
+                      </span>
+                      <br />
+                      <span>
+                        <b>by: {userName}</b>
+                      </span>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
         </Card>
-        
       </div>
     </section>
   );

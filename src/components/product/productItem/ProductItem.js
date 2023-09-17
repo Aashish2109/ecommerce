@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from './ProductItem.module.scss';
 import { useDispatch } from 'react-redux';
 import { ADD_TO_CART, CALCULATE_TOTAL_QUANTITY } from '../../../redux/slice/cartSlice';
-import Card from '../../Card';
+import Card from "../../Card"
 
 
 const ProductItem = ({ product, grid, id, name, price, desc, imageURL }) => {

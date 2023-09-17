@@ -9,7 +9,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { toast } from "react-toastify";
 import useFetchDocument from "../../customHooks/useFetchDocument";
-import Image from "../../assets/loader.gif";
+import spinnerImg from "../../assets/loader.gif";
 
 const ReviewProducts = () => {
   const [rate, setRate] = useState(0);
@@ -53,7 +53,7 @@ const ReviewProducts = () => {
       <div className={`container ${styles.review}`}>
         <h2>Review Products</h2>
         {product === null ? (
-          <img src={Image} alt="Loading..." style={{ width: "50px" }} />
+          <img src={spinnerImg} alt="Loading..." style={{ width: "50px" }} />
         ) : (
           <>
             <p>

@@ -3,7 +3,7 @@
   height: 90vh;
   position: relative;
   overflow: hidden;
-  background-color: darkcyan;
+  background-color: var(--color-dark);
 }
 
 .slide {
@@ -33,7 +33,7 @@
   text-align: center;
   top: 23rem;
   left: 50%;
-  opacity: 1;
+  opacity: 0;
   width: 50%;
   padding: 3rem;
   display: flex;
@@ -44,7 +44,7 @@
   background: rgba(0, 0, 0, 0.4);
   animation: slide-up 1s ease 0.5s;
   animation-fill-mode: forwards;
-     /* visibility: hidden; */
+  //   visibility: hidden;
   h2 {
     font-size: 4.5rem;
   }
@@ -68,7 +68,7 @@
 }
 
 .content > * {
-  color: black;
+  color: #fff;
   margin-bottom: 1rem;
 }
 
@@ -77,9 +77,9 @@
   transform: translateX(0);
 }
 
-// .current .content {
-//   opacity: 1;
-// }
+.current .content {
+  opacity: 1;
+}
 .arrow {
   border: 2px solid orangered;
   border-radius: 50%;

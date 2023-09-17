@@ -3,10 +3,10 @@
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 2px solid #ccc;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  
 
   .hidden {
     display: none;
@@ -22,16 +22,15 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-
   }
   p {
     margin-left: 1rem;
     .page {
-      color: red;
+      color: var(--color-danger);
     }
   }
 }
 .active {
-  background-color: green;
+  background-color: var(--color-danger);
   color: #fff;
 }

@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
-  PaymentElement,useStripe,useElements,
+  PaymentElement,
+  useStripe,
+  useElements,
 } from "@stripe/react-stripe-js";
 import styles from "./CheckoutForm.module.scss";
+import Card from "../Card"
 import CheckoutSummary from "../checkoutSummary/CheckoutSummary";
-import Card from "../Card";
-import Image from "../../assets/loader.gif";
+import spinnerImg from "../../assets/loader.gif";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { selectEmail, selectUserID } from "../../redux/slice/authSlice";
-import { CLEAR_CART, selectCartItems, selectCartTotalAmount } from "../../redux/slice/cartSlice";
+import {
+  CLEAR_CART,
+  selectCartItems,
+  selectCartTotalAmount,
+} from "../../redux/slice/cartSlice";
 import { selectShippingAddress } from "../../redux/slice/checkoutSlice";
-import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useNavigate } from "react-router-dom";
 
@@ -20,16 +26,16 @@ const CheckoutForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
-  const [email, setEmail] = useState("");
 
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
-  const userID=useSelector(selectUserID);
-  const userEmail=useSelector(selectEmail);
-  const cartItems=useSelector(selectCartItems);
-  const cartTotalAmount=useSelector(selectCartTotalAmount);
-  const shippingAddress=useSelector(selectShippingAddress);
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userID = useSelector(selectUserID);
+  const userEmail = useSelector(selectEmail);
+  const cartItems = useSelector(selectCartItems);
+  const cartTotalAmount = useSelector(selectCartTotalAmount);
+  const shippingAddress = useSelector(selectShippingAddress);
+
   useEffect(() => {
     if (!stripe) {
       return;
@@ -44,32 +50,31 @@ const CheckoutForm = () => {
     }
   }, [stripe]);
 
+  // Save order to Order History
   const saveOrder = () => {
-    const today=new Date()
-    const date=today.toDateString()
-    const time=today.toLocaleTimeString()
-    const orderConfig={
+    const today = new Date();
+    const date = today.toDateString();
+    const time = today.toLocaleTimeString();
+    const orderConfig = {
       userID,
       userEmail,
-      orderDate:date,
-      orderTime:time,
-      orderAmount:cartTotalAmount,
-      orderStatus:"Order Placed...",
+      orderDate: date,
+      orderTime: time,
+      orderAmount: cartTotalAmount,
+      orderStatus: "Order Placed...",
       cartItems,
       shippingAddress,
-      createdAt:Timestamp.now().toDate()
-
-    }
+      createdAt: Timestamp.now().toDate(),
+    };
     try {
-       addDoc(collection(db, "orders"),orderConfig);
-       dispatch(CLEAR_CART());
-       toast.success("Order Saved")
-       navigate("/checkout-success")
-       
+      addDoc(collection(db, "orders"), orderConfig);
+      dispatch(CLEAR_CART());
+      toast.success("Order saved");
+      navigate("/checkout-success");
     } catch (error) {
       toast.error(error.message);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,34 +87,31 @@ const CheckoutForm = () => {
     setIsLoading(true);
 
     const confirmPayment = await stripe
-    .confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/checkout-success",
-      },
-      redirect: "if_required",
-    })
-    .then((result) => {
+      .confirmPayment({
+        elements,
+        confirmParams: {
+          // Make sure to change this to your payment completion page
+          return_url: "http://localhost:3000/checkout-success",
+        },
+        redirect: "if_required",
+      })
+      .then((result) => {
         // ok - paymentIntent // bad - error
-        if(result.error) {
-            toast.error(result.error.message);
-            setMessage(result.error.message);
-            return;
+        if (result.error) {
+          toast.error(result.error.message);
+          setMessage(result.error.message);
+          return;
         }
-        if(result.paymentIntent) {
-            if(result.paymentIntent.status === "succeeded") {
-                setIsLoading(false);
-                toast.success("Payment Successful");
-                saveOrder();
-            }
+        if (result.paymentIntent) {
+          if (result.paymentIntent.status === "succeeded") {
+            setIsLoading(false);
+            toast.success("Payment successful");
+            saveOrder();
+          }
         }
-    });
-    setIsLoading(false);
-  };
+      });
 
-  const paymentElementOptions = {
-    layout: "tabs",
+    setIsLoading(false);
   };
 
   return (
@@ -122,7 +124,6 @@ const CheckoutForm = () => {
               <CheckoutSummary />
             </Card>
           </div>
-
           <div>
             <Card cardClass={`${styles.card} ${styles.pay}`}>
               <h3>Stripe Checkout</h3>
@@ -135,7 +136,7 @@ const CheckoutForm = () => {
                 <span id="button-text">
                   {isLoading ? (
                     <img
-                      src={Image}
+                      src={spinnerImg}
                       alt="Loading..."
                       style={{ width: "20px" }}
                     />

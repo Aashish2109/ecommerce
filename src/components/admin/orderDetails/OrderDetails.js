@@ -1,46 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import styles from './OrderDetails.module.scss'
-import useFetchDocument from '../../../customHooks/useFetchDocument'
-import Image from '../../../assets/loader.gif'
-import { Link, useParams } from 'react-router-dom'
-import ChangeOrderStatus from '../changeOrderStatus/ChangeOrderStatus'
+import React, { useEffect, useState } from "react";
+import useFetchDocument from "../../../customHooks/useFetchDocument";
+import styles from "./OrderDetails.module.scss";
+import spinnerImg from "../../../assets/loader.gif";
+import { Link, useParams } from "react-router-dom";
+import ChangeOrderStatus from "../changeOrderStatus/ChangeOrderStatus";
 
 const OrderDetails = () => {
-  const { id } = useParams()
   const [order, setOrder] = useState(null);
+  const { id } = useParams();
   const { document } = useFetchDocument("orders", id);
 
   useEffect(() => {
-    setOrder(document)
+    setOrder(document);
   }, [document]);
-
 
   return (
     <>
       <div className={styles.table}>
         <h2>Order Details</h2>
         <div>
-          <Link to="/order-history">&larr; Back To Orders</Link>
+          <Link to="/admin/orders">&larr; Back To Orders</Link>
         </div>
         <br />
         {order === null ? (
-          <img src={Image} alt="Loading..." style={{ width: "50px" }} />
+          <img src={spinnerImg} alt="Loading..." style={{ width: "50px" }} />
         ) : (
           <>
             <p>
-              <b>Order ID</b>{order.id}
+              <b>Order ID</b> {order.id}
             </p>
             <p>
-              <b>Order Amount</b>${order.orderAmount}
+              <b>Order Amount</b> ${order.orderAmount}
             </p>
             <p>
-              <b>Order Status</b>{order.orderStatus}
+              <b>Order Status</b> {order.orderStatus}
             </p>
             <p>
-              <b>Shipping Address</b><br />
+              <b>Shipping Address</b>
+              <br />
               Address: {order.shippingAddress.line1},
-              {order.shippingAddress.line2},
-              {order.shippingAddress.city}
+              {order.shippingAddress.line2}, {order.shippingAddress.city}
               <br />
               State: {order.shippingAddress.state}
               <br />
@@ -50,12 +49,11 @@ const OrderDetails = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Serial No</th>
+                  <th>s/n</th>
                   <th>Product</th>
                   <th>Price</th>
                   <th>Quantity</th>
                   <th>Total</th>
-                  
                 </tr>
               </thead>
               <tbody>
@@ -67,30 +65,29 @@ const OrderDetails = () => {
                         <b>{index + 1}</b>
                       </td>
                       <td>
-                        <p>{name}</p>
-                        <img src={imageURL} alt={name} style={{ width: "100px" }} />
+                        <p>
+                          <b>{name}</b>
+                        </p>
+                        <img
+                          src={imageURL}
+                          alt={name}
+                          style={{ width: "100px" }}
+                        />
                       </td>
-                      <td>
-                        {price}
-                      </td>
-                      <td>
-                        {cartQuantity}
-                      </td>
-                      <td>
-                        <p>{(price * cartQuantity).toFixed(2)}</p>
-                      </td>
-                      
+                      <td>{price}</td>
+                      <td>{cartQuantity}</td>
+                      <td>{(price * cartQuantity).toFixed(2)}</td>
                     </tr>
-                  )
+                  );
                 })}
               </tbody>
             </table>
           </>
         )}
-        <ChangeOrderStatus order={order} id={id}/>
+        <ChangeOrderStatus order={order} id={id} />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default OrderDetails
+export default OrderDetails;
