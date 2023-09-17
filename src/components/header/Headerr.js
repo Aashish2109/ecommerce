@@ -18,7 +18,7 @@ const logo = (
   <div className='logo'>
     <NavLink to="/">
       <h2>
-        e<span>Shop</span>.
+        AG<span>Shoppe</span>.
       </h2>
     </NavLink>
   </div>

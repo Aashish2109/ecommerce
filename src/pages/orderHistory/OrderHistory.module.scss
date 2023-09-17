@@ -9,8 +9,8 @@
       font-size: 1.4rem;
   
       thead {
-        border-top: 2px solid var(--light-blue);
-        border-bottom: 2px solid var(--light-blue);
+        border-top: 2px solid lightblue;
+        border-bottom: 2px solid lightblue;
       }
   
       th {
@@ -39,11 +39,11 @@
         background-color: #eee;
       }
       .pending {
-        color: orangered;
+        color:orangered;
         font-weight: 500;
       }
       .delivered {
-        color: green;
+        color:green;
         font-weight: 500;
       }
     }

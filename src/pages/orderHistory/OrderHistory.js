@@ -48,6 +48,7 @@ const OrderHistory=()=> {
               <tbody>
                 {filteredOrders.map((order,index)=>{
                   const {id,orderDate,orderTime,orderAmount,orderStatus}=order
+            
                   return (
                     <tr key={id} onClick={()=>handleClick(id)}>
                       <td>{index+1}</td>
@@ -55,7 +56,7 @@ const OrderHistory=()=> {
                       <td>{id}</td>
                       <td>{"$"}{orderAmount}</td>
                       <td>
-                      <p className={orderStatus!=="Delivered" ? `${styles.pending}`:`${styles.delivered}`}>{orderStatus}</p>
+                      <p className={orderStatus!=="Delivered..." ? `${styles.pending}`:`${styles.delivered}`}>{orderStatus}</p>
                       </td>
                     </tr>
                   )
